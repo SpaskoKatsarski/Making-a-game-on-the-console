@@ -165,6 +165,26 @@ namespace Hanger
 
                         decryptedWord.Remove(indexOfGuessedLetter, 1);
                         decryptedWord.Insert(indexOfGuessedLetter, tryLetter);
+
+                        Console.ForegroundColor = ConsoleColor.White;
+
+                        Console.Write(">> ");
+
+                        for (int i = 0; i < decryptedWord.Length; i++)
+                        {
+                            if (i == indexOfGuessedLetter)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.Write(decryptedWord[i]);
+                                Console.ForegroundColor = ConsoleColor.White;
+                            }
+                            else
+                            {
+                                Console.Write(decryptedWord[i]);
+                            }
+                        }
+
+                        Console.Write(" <<");
                     }
                 }
                 else
@@ -172,11 +192,12 @@ namespace Hanger
                     Console.ForegroundColor = ConsoleColor.Red;
 
                     Console.WriteLine($"Tries left {{{--triesLeft}}}");
+
+                    Console.WriteLine($">> {decryptedWord} <<");
                 }
 
                 Console.ForegroundColor = ConsoleColor.White;
-
-                Console.WriteLine($">> {decryptedWord} <<");
+                
                 Console.WriteLine();
 
                 if (triesLeft == 0)
@@ -204,6 +225,7 @@ namespace Hanger
             }
             else
             {
+                Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
                 Console.WriteLine("Good job! You have correctly guessed the word and escaped your death! :D");
             }
