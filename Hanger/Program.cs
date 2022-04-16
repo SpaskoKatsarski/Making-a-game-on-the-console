@@ -50,10 +50,11 @@ namespace Hanger
             bool hasLost = false;
             bool isFirstIteration = true;
             bool hintIteration = false;
+            bool hasUsedHint = false;
 
             while (decryptedWord.ToString().Contains('_'))
             {
-                if (triesLeft == 3)
+                if (triesLeft == 3 && !hasUsedHint)
                 {
                     hintIteration = true;
 
@@ -130,6 +131,8 @@ namespace Hanger
                     {
                         Console.WriteLine("Sure, good luck!");
                     }
+
+                    hasUsedHint = true;
 
                     Console.WriteLine();
                     Console.Write("Write your answer: ");
