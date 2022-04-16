@@ -11,7 +11,7 @@ namespace Hanger
         {
             int triesLeft = 10;
 
-            string[] allWords = { "army", "arrow", "school", "building", "article", "answer", "animal", "bedroom", "mammal", "bowl", "championship", "commander", "customer", "programmer", "developer", "development", "studio", "employee", "interview", "environment", "episode", "firecracker", "harbor", "damnation", "abyss", "battleship", "storm", "fearless", "sergeant", "heart", "headline", "retreat", "highway", "horizon", "" };
+            string[] allWords = { "army", "arrow", "school", "building", "article", "answer", "animal", "bedroom", "mammal", "bowl", "championship", "commander", "customer", "programmer", "developer", "development", "studio", "employee", "interview", "environment", "episode", "firecracker", "harbor", "damnation", "abyss", "battleship", "storm", "fearless", "sergeant", "heart", "headline", "retreat", "highway", "horizon", "ticket" };
 
             Random random = new Random();
             int index = random.Next(0, allWords.Length - 1);
