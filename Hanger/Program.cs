@@ -51,7 +51,7 @@ namespace Hanger
 
             while (decryptedWord.ToString().Contains('_'))
             {
-                if (triesLeft == 7)
+                if (triesLeft == 3)
                 {
                     hintIteration = true;
 
