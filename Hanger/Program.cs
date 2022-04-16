@@ -36,26 +36,45 @@ namespace Hanger
                 }
             }
 
-            Console.WriteLine($"The game has started and you have a total of {triesLeft} tries left");
-            Console.WriteLine($"Try to guess the word: {decryptedWord}");
+            Console.ForegroundColor = ConsoleColor.Yellow;
 
-            int removeCount = 0;
+            Console.WriteLine($"The game has started and you have a total of {triesLeft} tries.");
+            Console.WriteLine($"Try to guess the word: '{decryptedWord}'");
+
+            Console.WriteLine();
+            
             bool hasLost = false;
+            bool isFirstIteration = true;
 
             while (decryptedWord.ToString().Contains('_'))
             {
+                if (!isFirstIteration)
+                {
+                    Console.Write("Try again: ");
+                }
+                else
+                {
+                    Console.Write("Write your guess: ");
+                }
+
                 char tryLetter = char.Parse(Console.ReadLine());
                 tryLetter = Char.ToLower(tryLetter);
+
+                Console.WriteLine();
 
                 if (flagWord.ToString().Contains(tryLetter) && !(decryptedWord.ToString().Contains(tryLetter)))
                 {
                     // The user has guessed a letter which is not represented in the decrypted word.
                     // We have to replace all '_' where we have its occurrence.
-                    
+
+                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                    Console.WriteLine($"The word contains '{tryLetter}'!");
+
                     while (flagWord.ToString().Contains(tryLetter))
                     {
                         int indexOfGuessedLetter = flagWord.ToString().IndexOf(tryLetter);
-                        flagWord.Replace(tryLetter, '_');
+                        flagWord.Remove(indexOfGuessedLetter, 1);
+                        flagWord.Insert(indexOfGuessedLetter, '_');
 
                         // school
                         
@@ -65,10 +84,14 @@ namespace Hanger
                 }
                 else
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
+
                     Console.WriteLine($"Tries left {{{--triesLeft}}}");
                 }
 
-                Console.WriteLine(decryptedWord);
+                Console.ForegroundColor = ConsoleColor.White;
+
+                Console.WriteLine($">> {decryptedWord} <<");
                 Console.WriteLine();
 
                 if (triesLeft == 0)
@@ -76,12 +99,23 @@ namespace Hanger
                     hasLost = true;
                     break;
                 }
+
+                if (isFirstIteration)
+                {
+                    isFirstIteration = false;
+                }
             }
 
             if (hasLost)
             {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine("You lost!");
                 Console.WriteLine($"The word was {wordToGuess}");
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine("Good job! You have correctly guessed the word and escaped your death! :D");
             }
         }
     }
