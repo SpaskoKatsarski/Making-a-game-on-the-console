@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace Hanger
@@ -9,10 +11,10 @@ namespace Hanger
         {
             int triesLeft = 10;
 
-            string[] allWords = { "army", "arrow", "school", "building" };
+            string[] allWords = { "army", "arrow", "school", "building", "article", "answer", "animal", "bedroom", "mammal", "bowl", "championship", "commander", "customer", "programmer", "developer", "development", "studio", "employee", "interview", "environment", "episode", "firecracker", "harbor", "damnation", "abyss", "battleship", "storm", "fearless", "sergeant", "heart", "headline", "retreat", "highway", "horizon", "" };
 
             Random random = new Random();
-            int index = random.Next(0, allWords.Length);
+            int index = random.Next(0, allWords.Length - 1);
 
             string wordToGuess = allWords[index];
 
@@ -42,17 +44,100 @@ namespace Hanger
             Console.WriteLine($"Try to guess the word: '{decryptedWord}'");
 
             Console.WriteLine();
-            
+
             bool hasLost = false;
             bool isFirstIteration = true;
+            bool hintIteration = false;
 
             while (decryptedWord.ToString().Contains('_'))
             {
-                if (!isFirstIteration)
+                if (triesLeft == 7)
+                {
+                    hintIteration = true;
+
+                    Console.Write("Do you want a hint? -> ");
+
+                    string answer = Console.ReadLine();
+
+                    Console.WriteLine();
+
+                    if (answer.ToLower() == "yes")
+                    {
+                        char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToLower().ToCharArray();
+
+                        Console.Write($"The word contains one of these letters: ");
+
+                        int indexOfCorrectLetter = random.Next(0, flagWord.Length);
+
+                        while (WordIsInvalid(flagWord, indexOfCorrectLetter))
+                        {
+                            indexOfCorrectLetter = random.Next(0, flagWord.Length - 1);
+                        }
+
+                        char correctLetter = flagWord.ToString()[indexOfCorrectLetter];
+
+                        List<char> hintLetters = new List<char>
+                        {
+                            correctLetter
+                        };
+
+                        int count = 0;
+
+                        while (count < 2)
+                        {
+                            int indexOfCurrentIncorrectWord = random.Next(0, alphabet.Length - 1);
+
+                            // Check if letter is actually invalid:
+
+                            char currChar = alphabet[indexOfCurrentIncorrectWord];
+
+                            if (currChar != correctLetter && !(flagWord.ToString().Contains(currChar)) && !(hintLetters.Contains(currChar)))
+                            {
+                                count++;
+
+                                hintLetters.Add(currChar);
+                            }
+                        }
+
+                        List<char> usedLetters = new List<char>();
+
+                        for (int i = 0; i < 3; i++)
+                        {
+                            int randomIndex = random.Next(0, hintLetters.Count);
+
+                            char currChar = hintLetters[randomIndex];
+
+                            if (!usedLetters.Contains(currChar))
+                            {
+                                Console.ForegroundColor = ConsoleColor.DarkCyan;
+
+                                Console.Write($"{currChar}, ");
+
+                                usedLetters.Add(currChar);
+                            }
+                            else
+                            {
+                                i--;
+                            }
+                        }
+
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine();
+                    }
+                    else if (answer.ToLower() == "no")
+                    {
+                        Console.WriteLine("Sure, good luck!");
+                    }
+
+                    Console.WriteLine();
+                    Console.Write("Write your answer: ");
+                }
+
+                if (!isFirstIteration && !hintIteration)
                 {
                     Console.Write("Try again: ");
                 }
-                else
+                else if (!hintIteration)
                 {
                     Console.Write("Write your guess: ");
                 }
@@ -77,7 +162,7 @@ namespace Hanger
                         flagWord.Insert(indexOfGuessedLetter, '_');
 
                         // school
-                        
+
                         decryptedWord.Remove(indexOfGuessedLetter, 1);
                         decryptedWord.Insert(indexOfGuessedLetter, tryLetter);
                     }
@@ -104,19 +189,34 @@ namespace Hanger
                 {
                     isFirstIteration = false;
                 }
+
+                if (hintIteration)
+                {
+                    hintIteration = false;
+                }
             }
 
             if (hasLost)
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine("You lost!");
-                Console.WriteLine($"The word was {wordToGuess}");
+                Console.WriteLine($"The word was '{wordToGuess}'");
             }
             else
             {
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
                 Console.WriteLine("Good job! You have correctly guessed the word and escaped your death! :D");
             }
+        }
+
+        static bool WordIsInvalid(StringBuilder flagWord, int indexOfCorrectLetter)
+        {
+            if (flagWord.ToString()[indexOfCorrectLetter] == '_' || flagWord.ToString()[indexOfCorrectLetter] == flagWord.ToString()[0] || flagWord.ToString()[indexOfCorrectLetter] == flagWord.ToString()[flagWord.ToString().Length - 1])
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
