@@ -18,6 +18,8 @@ namespace Hanger
 
             string wordToGuess = allWords[index];
 
+            // If the user types 'e' in this case "string wordToGuess = "heeeeey";", all e's should become green (marked as guessed).
+
             StringBuilder flagWord = new StringBuilder(wordToGuess);
 
             StringBuilder decryptedWord = new StringBuilder();
@@ -155,9 +157,11 @@ namespace Hanger
                     Console.ForegroundColor = ConsoleColor.DarkMagenta;
                     Console.WriteLine($"The word contains '{tryLetter}'!");
 
+                    int indexOfGuessedLetter = -1;
+
                     while (flagWord.ToString().Contains(tryLetter))
                     {
-                        int indexOfGuessedLetter = flagWord.ToString().IndexOf(tryLetter);
+                        indexOfGuessedLetter = flagWord.ToString().IndexOf(tryLetter);
                         flagWord.Remove(indexOfGuessedLetter, 1);
                         flagWord.Insert(indexOfGuessedLetter, '_');
 
@@ -165,27 +169,31 @@ namespace Hanger
 
                         decryptedWord.Remove(indexOfGuessedLetter, 1);
                         decryptedWord.Insert(indexOfGuessedLetter, tryLetter);
-
-                        Console.ForegroundColor = ConsoleColor.White;
-
-                        Console.Write(">> ");
-
-                        for (int i = 0; i < decryptedWord.Length; i++)
-                        {
-                            if (i == indexOfGuessedLetter)
-                            {
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.Write(decryptedWord[i]);
-                                Console.ForegroundColor = ConsoleColor.White;
-                            }
-                            else
-                            {
-                                Console.Write(decryptedWord[i]);
-                            }
-                        }
-
-                        Console.Write(" <<");
                     }
+
+                    Console.ForegroundColor = ConsoleColor.White;
+
+                    Console.Write(">> ");
+
+                    char guessedLetter = decryptedWord[indexOfGuessedLetter];
+
+                    for (int i = 0; i < decryptedWord.Length; i++)
+                    {
+                        char currentLetter = decryptedWord[i];
+
+                        if (currentLetter == guessedLetter && decryptedWord.ToString().IndexOf(guessedLetter) != 0 && decryptedWord.ToString().IndexOf(guessedLetter) != decryptedWord.Length)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write(decryptedWord[i]);
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                        else
+                        {
+                            Console.Write(decryptedWord[i]);
+                        }
+                    }
+
+                    Console.Write(" <<");
                 }
                 else
                 {
@@ -197,7 +205,7 @@ namespace Hanger
                 }
 
                 Console.ForegroundColor = ConsoleColor.White;
-                
+
                 Console.WriteLine();
 
                 if (triesLeft == 0)
