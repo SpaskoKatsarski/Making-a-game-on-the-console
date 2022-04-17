@@ -52,9 +52,24 @@ namespace Hanger
             bool hintIteration = false;
             bool hasUsedHint = false;
 
+            int hintNumber = 0;
+
+            if (wordToGuess.Length < 5)
+            {
+                hintNumber = 3;
+            }
+            else if (wordToGuess.Length >= 5 && wordToGuess.Length < 10)
+            {
+                hintNumber = 6;
+            }
+            else
+            {
+                hintNumber = 8;
+            }
+
             while (decryptedWord.ToString().Contains('_'))
             {
-                if (triesLeft == 3 && !hasUsedHint)
+                if (triesLeft == hintNumber && !hasUsedHint)
                 {
                     hintIteration = true;
 
