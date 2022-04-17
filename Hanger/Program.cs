@@ -52,7 +52,7 @@ namespace Hanger
             bool hintIteration = false;
             bool hasUsedHint = false;
 
-            int hintNumber = 0;
+            int hintNumber;
 
             if (wordToGuess.Length < 5)
             {
