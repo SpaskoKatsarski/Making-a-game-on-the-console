@@ -73,7 +73,11 @@ namespace Hanger
                 {
                     hintIteration = true;
 
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+
                     Console.Write("Do you want a hint? -> ");
+
+                    Console.ForegroundColor = ConsoleColor.White;
 
                     string answer = Console.ReadLine();
 
@@ -163,7 +167,7 @@ namespace Hanger
                 }
 
                 char tryLetter = char.Parse(Console.ReadLine());
-                tryLetter = Char.ToLower(tryLetter);
+                tryLetter = char.ToLower(tryLetter);
 
                 Console.WriteLine();
 
